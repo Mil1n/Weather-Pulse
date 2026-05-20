@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Pulse — Подробная погода по городам</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-bg"></div>
+  <main class="container">
+    <header class="hero fade-in-up">
+      <h1>🌦️ Weather Pulse</h1>
+      <p>Введи город и получи подробную, красивую и понятную погоду в одном экране.</p>
+    </header>
+
+    <section class="search-card fade-in-up delay-1">
+      <label for="cityInput">Введите город</label>
+      <div class="search-row">
+        <div class="search-stack">
+          <input id="cityInput" type="text" placeholder="Например: Москва, Париж, Токио" autocomplete="off" />
+          <div id="suggestions" class="suggestions hidden"></div>
+        </div>
+        <button id="searchBtn">Показать погоду</button>
+      </div>
+      <div id="geoPrompt" class="geo-prompt hidden">
+        <p id="geoPromptText">Вы находитесь в городе "..."?</p>
+        <div class="geo-actions">
+          <button id="geoUseBtn" class="geo-btn">Да, показать</button>
+          <button id="geoDismissBtn" class="geo-btn secondary">Нет, спасибо</button>
+        </div>
+      </div>
+      <p class="hint">Подсказки появляются при вводе первых букв города.</p>
+    </section>
+
+    <section id="weatherCard" class="weather-card hidden" aria-live="polite">
+      <div class="weather-top">
+        <div>
+          <h2 id="cityName">—</h2>
+          <p id="weatherDescription">—</p>
+        </div>
+        <div id="weatherIcon" class="weather-icon pulse">☀️</div>
+      </div>
+
+      <div class="temp-block">
+        <span id="temperature">0°C</span>
+        <p id="feelsLike" class="sub-temp">Ощущается как: —</p>
+      </div>
+
+      <div class="details-grid">
+        <article><h3>💧 Влажность</h3><p id="humidity">—</p></article>
+        <article><h3>🌬️ Ветер</h3><p id="wind">—</p></article>
+        <article><h3>🧭 Направление ветра</h3><p id="windDirection">—</p></article>
+        <article><h3>⏱️ Давление</h3><p id="pressure">—</p></article>
+        <article><h3>👁️ Видимость</h3><p id="visibility">—</p></article>
+        <article><h3>☁️ Облачность</h3><p id="cloudCover">—</p></article>
+        <article><h3>🌧️ Осадки</h3><p id="precipitation">—</p></article>
+        <article><h3>🌅 Восход / Закат</h3><p id="sunCycle">—</p></article>
+      </div>
+
+      <div class="hourly-block">
+        <h3>🕒 Прогноз на ближайшие часы</h3>
+        <div id="hourlyList" class="hourly-list"></div>
+      </div>
+    </section>
+
+    <p id="status" class="status"></p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

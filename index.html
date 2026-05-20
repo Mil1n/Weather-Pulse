@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Pulse — Подробная погода по городам</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-bg"></div>
+  <main class="container">
+    <header class="hero">
+      <h1>🌦️ Weather Pulse</h1>
+      <p>Современный погодный дашборд: выбери город и получи детальную информацию.</p>
+    </header>
+
+    <section class="search-card">
+      <label for="cityInput">Введите город</label>
+      <div class="search-row">
+        <input id="cityInput" type="text" placeholder="Например: Москва, Санкт-Петербург, Казань" />
+        <button id="searchBtn">Показать погоду</button>
+      </div>
+      <p class="hint">Данные берутся из Open-Meteo Geocoding + Forecast API.</p>
+    </section>
+
+    <section id="weatherCard" class="weather-card hidden" aria-live="polite">
+      <div class="weather-top">
+        <div>
+          <h2 id="cityName">—</h2>
+          <p id="weatherDescription">—</p>
+        </div>
+        <div id="weatherIcon" class="weather-icon">☀️</div>
+      </div>
+
+      <div class="temp-block">
+        <span id="temperature">0°C</span>
+      </div>
+
+      <div class="details-grid">
+        <article>
+          <h3>💧 Влажность</h3>
+          <p id="humidity">—</p>
+        </article>
+        <article>
+          <h3>🌬️ Ветер</h3>
+          <p id="wind">—</p>
+        </article>
+        <article>
+          <h3>⏱️ Давление</h3>
+          <p id="pressure">—</p>
+        </article>
+        <article>
+          <h3>👁️ Видимость</h3>
+          <p id="visibility">—</p>
+        </article>
+      </div>
+    </section>
+
+    <p id="status" class="status"></p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -95,7 +95,7 @@ WeatherPulse должен понимать естественные погодн
 1. Склонируй репозиторий:
 
 ```bash
-git clone <repo-url>
+git clone <[repo-url](https://github.com/Mil1n/Weather-Pulse)>
 cd Weather-Pulse
 ```
 

@@ -1,0 +1,17 @@
+{
+  "name": "Weather Pulse",
+  "short_name": "WeatherPulse",
+  "description": "Подробный прогноз погоды, советы и погодный ассистент.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#38bdf8",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

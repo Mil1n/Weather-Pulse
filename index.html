@@ -40,6 +40,7 @@
         </div>
         <button id="searchBtn" type="button">Показать погоду</button>
         <button id="geoBtn" class="secondary-btn" type="button">📍 Моё место</button>
+        <button id="voiceBtn" class="secondary-btn" type="button">🎙️ Голос</button>
       </div>
       <div class="quick-row">
         <div>
@@ -71,7 +72,7 @@
         <p id="feelsLike" class="sub-temp">Ощущается как: —</p>
       </div>
 
-      <div id="alerts" class="alerts hidden"></div>
+      <div id="alerts" class="alerts hidden" aria-live="polite"></div>
 
       <div class="details-grid">
         <article><h3>💧 Влажность</h3><p id="humidity">—</p></article>
@@ -82,11 +83,23 @@
         <article><h3>☁️ Облачность</h3><p id="cloudCover">—</p></article>
         <article><h3>🌧️ Осадки</h3><p id="precipitation">—</p></article>
         <article><h3>☀️ UV-индекс</h3><p id="uvIndex">—</p></article>
+        <article><h3>🏭 Качество воздуха</h3><p id="airQuality">—</p></article>
         <article><h3>🌅 Восход / Закат</h3><p id="sunCycle">—</p></article>
       </div>
 
       <div class="advice-card">
-        <h3>💡 Совет от WeatherPulse</h3>
+        <div class="card-heading">
+          <h3>💡 Совет от WeatherPulse</h3>
+          <label class="context-label" for="contextSelect">Сценарий
+            <select id="contextSelect">
+              <option value="walk">Прогулка</option>
+              <option value="run">Пробежка</option>
+              <option value="kids">С ребёнком</option>
+              <option value="bike">Велосипед</option>
+              <option value="dog">С собакой</option>
+            </select>
+          </label>
+        </div>
         <p id="weatherAdvice">—</p>
       </div>
 
@@ -95,8 +108,19 @@
         <p id="bestTime">—</p>
       </div>
 
+      <div class="day-plan-card">
+        <h3>🗓️ План дня</h3>
+        <div id="dayPlan" class="plan-list"></div>
+      </div>
+
       <div class="chart-block">
-        <h3>📈 Температура и осадки на 24 часа</h3>
+        <div class="card-heading">
+          <h3>📈 Температура и осадки</h3>
+          <div class="range-toggle" role="group" aria-label="Диапазон графика">
+            <button id="chart24Btn" class="unit-btn active" type="button">24 часа</button>
+            <button id="chart7Btn" class="unit-btn" type="button">7 дней</button>
+          </div>
+        </div>
         <div id="chart" class="chart" aria-label="График температуры и осадков"></div>
       </div>
 
@@ -110,8 +134,22 @@
         <div id="weeklyList" class="weekly-list"></div>
       </div>
 
+      <div class="compare-card">
+        <div class="card-heading">
+          <h3>⚖️ Сравнение избранных</h3>
+          <button id="compareBtn" class="secondary-btn" type="button">Сравнить</button>
+        </div>
+        <div id="compareList" class="compare-list"></div>
+      </div>
+
       <div class="chat-card">
-        <h3>💬 Погодный ассистент</h3>
+        <div class="card-heading">
+          <h3>💬 Погодный ассистент</h3>
+          <div class="chat-actions">
+            <button id="shareBtn" class="secondary-btn" type="button">Поделиться</button>
+            <button id="notifyBtn" class="secondary-btn" type="button">Уведомления</button>
+          </div>
+        </div>
         <div id="chatLog" class="chat-log" aria-live="polite"></div>
         <div class="chat-row">
           <input id="chatInput" type="text" placeholder="Спроси: нужен ли зонт? как одеться? когда гулять?" />
@@ -133,6 +171,6 @@
     </div>
   </template>
 
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

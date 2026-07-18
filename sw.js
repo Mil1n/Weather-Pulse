@@ -1,5 +1,8 @@
-const CACHE_NAME = 'weather-pulse-v2';
-const ASSETS = ['./', './index.html', './styles.css', './script.js', './manifest.json', './icon.svg'];
+const CACHE_NAME = 'weather-pulse-v3';
+const ASSETS = [
+  './', './index.html', './styles.css', './script.js', './manifest.json', './icon.svg',
+  './modules/api.js', './modules/constants.js', './modules/formatters.js', './modules/rules.js', './modules/storage.js',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));

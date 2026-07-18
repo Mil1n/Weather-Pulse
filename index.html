@@ -3,37 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Weather Pulse — подробный прогноз погоды, советы по одежде, UV, осадки, ветер и погодный ассистент." />
+  <meta name="theme-color" content="#0f172a" />
   <title>Weather Pulse — Подробная погода по городам</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="theme-clear">
   <div class="app-bg"></div>
   <main class="container">
     <header class="hero fade-in-up">
-      <h1>🌦️ Weather Pulse</h1>
-      <p>Введи город и получи подробную, красивую и понятную погоду в одном экране.</p>
+      <div>
+        <p class="eyebrow">умный прогноз без установки</p>
+        <h1>🌦️ Weather Pulse</h1>
+        <p>Введи город и получи подробную, красивую и понятную погоду в одном экране.</p>
+      </div>
+      <div class="hero-badge" aria-label="Приложение работает через Open-Meteo API">Open‑Meteo API</div>
     </header>
 
     <section class="search-card fade-in-up delay-1">
-      <label for="cityInput">Введите город</label>
+      <div class="toolbar">
+        <label for="cityInput">Введите город</label>
+        <div class="unit-toggle" role="group" aria-label="Единицы измерения">
+          <button id="metricBtn" class="unit-btn active" type="button">°C · км/ч</button>
+          <button id="imperialBtn" class="unit-btn" type="button">°F · mph</button>
+        </div>
+      </div>
       <div class="search-row">
         <div class="search-stack">
-          <input id="cityInput" type="text" placeholder="Например: Москва, Париж, Токио" autocomplete="off" />
-          <div id="suggestions" class="suggestions hidden"></div>
+          <input id="cityInput" type="text" placeholder="Например: Москва, Париж, Токио" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions" />
+          <div id="suggestions" class="suggestions hidden" role="listbox"></div>
         </div>
-        <button id="searchBtn">Показать погоду</button>
+        <button id="searchBtn" type="button">Показать погоду</button>
+        <button id="geoBtn" class="secondary-btn" type="button">📍 Моё место</button>
+        <button id="voiceBtn" class="secondary-btn" type="button">🎙️ Голос</button>
       </div>
-      <div id="geoPrompt" class="geo-prompt hidden">
-        <p id="geoPromptText">Вы находитесь в городе "..."?</p>
-        <div class="geo-actions">
-          <button id="geoUseBtn" class="geo-btn">Да, показать</button>
-          <button id="geoDismissBtn" class="geo-btn secondary">Нет, спасибо</button>
+      <div class="quick-row">
+        <div>
+          <p class="mini-title">Недавние</p>
+          <div id="recentCities" class="chip-list"></div>
+        </div>
+        <div>
+          <p class="mini-title">Избранное</p>
+          <div id="favoriteCities" class="chip-list"></div>
         </div>
       </div>
-      <p class="hint">Подсказки появляются при вводе первых букв города.</p>
+      <p class="hint">Подсказки появляются при вводе первых букв города. Можно выбрать город стрелками и Enter.</p>
     </section>
 
     <section id="weatherCard" class="weather-card hidden" aria-live="polite">
@@ -42,13 +61,18 @@
           <h2 id="cityName">—</h2>
           <p id="weatherDescription">—</p>
         </div>
-        <div id="weatherIcon" class="weather-icon pulse">☀️</div>
+        <div class="weather-actions">
+          <button id="favoriteBtn" class="icon-btn" type="button" aria-label="Добавить город в избранное">☆</button>
+          <div id="weatherIcon" class="weather-icon pulse">☀️</div>
+        </div>
       </div>
 
       <div class="temp-block">
         <span id="temperature">0°C</span>
         <p id="feelsLike" class="sub-temp">Ощущается как: —</p>
       </div>
+
+      <div id="alerts" class="alerts hidden" aria-live="polite"></div>
 
       <div class="details-grid">
         <article><h3>💧 Влажность</h3><p id="humidity">—</p></article>
@@ -59,12 +83,45 @@
         <article><h3>☁️ Облачность</h3><p id="cloudCover">—</p></article>
         <article><h3>🌧️ Осадки</h3><p id="precipitation">—</p></article>
         <article><h3>☀️ UV-индекс</h3><p id="uvIndex">—</p></article>
+        <article><h3>🏭 Качество воздуха</h3><p id="airQuality">—</p></article>
         <article><h3>🌅 Восход / Закат</h3><p id="sunCycle">—</p></article>
       </div>
 
       <div class="advice-card">
-        <h3>💡 Совет от WeatherPulse</h3>
+        <div class="card-heading">
+          <h3>💡 Совет от WeatherPulse</h3>
+          <label class="context-label" for="contextSelect">Сценарий
+            <select id="contextSelect">
+              <option value="walk">Прогулка</option>
+              <option value="run">Пробежка</option>
+              <option value="kids">С ребёнком</option>
+              <option value="bike">Велосипед</option>
+              <option value="dog">С собакой</option>
+            </select>
+          </label>
+        </div>
         <p id="weatherAdvice">—</p>
+      </div>
+
+      <div class="best-time-card">
+        <h3>🚶 Лучшее время для прогулки</h3>
+        <p id="bestTime">—</p>
+      </div>
+
+      <div class="day-plan-card">
+        <h3>🗓️ План дня</h3>
+        <div id="dayPlan" class="plan-list"></div>
+      </div>
+
+      <div class="chart-block">
+        <div class="card-heading">
+          <h3>📈 Температура и осадки</h3>
+          <div class="range-toggle" role="group" aria-label="Диапазон графика">
+            <button id="chart24Btn" class="unit-btn active" type="button">24 часа</button>
+            <button id="chart7Btn" class="unit-btn" type="button">7 дней</button>
+          </div>
+        </div>
+        <div id="chart" class="chart" aria-label="График температуры и осадков"></div>
       </div>
 
       <div class="hourly-block">
@@ -76,11 +133,44 @@
         <h3>📆 Прогноз на 7 дней</h3>
         <div id="weeklyList" class="weekly-list"></div>
       </div>
+
+      <div class="compare-card">
+        <div class="card-heading">
+          <h3>⚖️ Сравнение избранных</h3>
+          <button id="compareBtn" class="secondary-btn" type="button">Сравнить</button>
+        </div>
+        <div id="compareList" class="compare-list"></div>
+      </div>
+
+      <div class="chat-card">
+        <div class="card-heading">
+          <h3>💬 Погодный ассистент</h3>
+          <div class="chat-actions">
+            <button id="shareBtn" class="secondary-btn" type="button">Поделиться</button>
+            <button id="notifyBtn" class="secondary-btn" type="button">Уведомления</button>
+          </div>
+        </div>
+        <div id="chatLog" class="chat-log" aria-live="polite"></div>
+        <div class="chat-row">
+          <input id="chatInput" type="text" placeholder="Спроси: нужен ли зонт? как одеться? когда гулять?" />
+          <button id="chatBtn" type="button">Спросить</button>
+        </div>
+      </div>
     </section>
 
     <p id="status" class="status"></p>
   </main>
 
-  <script src="script.js"></script>
+  <template id="skeletonTemplate">
+    <div class="skeleton-card">
+      <div class="skeleton wide"></div>
+      <div class="skeleton temp"></div>
+      <div class="skeleton-grid">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>

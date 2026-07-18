@@ -144,6 +144,35 @@ function renderAlerts(currentUv) {
   els.alerts.innerHTML = alerts.map(([type, text]) => `<div class="alert ${type === 'danger' ? 'danger' : ''}">${text}</div>`).join('');
   els.alerts.classList.toggle('hidden', !alerts.length);
 }
+function selectSuggestion(city, label) { selectedSuggestion = city; cityInput.value = label; suggestionsEl.classList.add('hidden'); cityInput.setAttribute('aria-expanded', 'false'); handleSearch(); }
+function moveSuggestion(delta) {
+  const items = [...suggestionsEl.querySelectorAll('.suggestion-item')];
+  if (!items.length || suggestionsEl.classList.contains('hidden')) return;
+  activeSuggestionIndex = (activeSuggestionIndex + delta + items.length) % items.length;
+  items.forEach((item, index) => item.classList.toggle('active', index === activeSuggestionIndex));
+  cityInput.setAttribute('aria-activedescendant', items[activeSuggestionIndex].id);
+}
+
+function buildAlerts(current, currentUv, daily) {
+  const alerts = [];
+  if (stormCodes.includes(current.weather_code)) alerts.push(['danger', '⛈️ Возможна гроза — лучше перенести прогулку и держаться подальше от открытых площадок.']);
+  if (current.wind_speed_10m >= 35) alerts.push(['danger', '🌬️ Сильный ветер — будьте осторожны рядом с деревьями и временными конструкциями.']);
+  if (current.temperature_2m >= 30) alerts.push(['danger', '🔥 Жара — пейте воду и избегайте перегрева.']);
+  if (current.temperature_2m <= -10) alerts.push(['danger', '🥶 Сильный мороз — утеплитесь и сократите время на улице.']);
+  if ((daily.precipitation_probability_max?.[0] ?? 0) >= 60) alerts.push(['warn', '☔ Высокий шанс осадков — зонт точно пригодится.']);
+  if (currentUv >= 6) alerts.push(['warn', '☀️ Высокий UV — используйте SPF, очки и головной убор.']);
+  alertsEl.innerHTML = alerts.map(([type, text]) => `<div class="alert ${type === 'danger' ? 'danger' : ''}">${text}</div>`).join('');
+  alertsEl.classList.toggle('hidden', !alerts.length);
+}
+
+function setWeatherTheme(code) {
+  document.body.className = '';
+  if (stormCodes.includes(code)) document.body.classList.add('theme-storm');
+  else if (snowyCodes.includes(code)) document.body.classList.add('theme-snow');
+  else if (rainyCodes.includes(code)) document.body.classList.add('theme-rain');
+  else if ([2, 3, 45, 48].includes(code)) document.body.classList.add('theme-cloudy');
+  else document.body.classList.add('theme-clear');
+}
 
 function renderHourly() {
   els.hourlyList.innerHTML = '';
